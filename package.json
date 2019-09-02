@@ -1,8 +1,8 @@
 {
-  "name": "new",
+  "name": "@joebob12/select2",
   "version": "1.0.0",
   "description": "",
-  "keywords": [],
+  "keywords": ["select"],
   "main": "src/index.js",
   "dependencies": {
     "react": "16.8.6",
