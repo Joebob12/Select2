@@ -3,6 +3,11 @@
   text-align: center;
 }
 
+.better-select,
+.better-select input:first-child {
+  position: relative;
+}
+
 .chosen-value,
 .value-list {
   position: absolute;
