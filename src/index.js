@@ -15,11 +15,7 @@ function App() {
     <div className="App">
       <h1>Select 2</h1>
       <h3>{selectedValue}</h3>
-      <Select2
-        handleChange={value => {
-          setSelectedValue(value);
-        }}
-        value={selectedValue}
+      <BetterSelect
         options={[
           { label: "one", value: "one", optgroup: "numbers" },
           { label: "two", value: "two", optgroup: "numbers" },
@@ -30,6 +26,7 @@ function App() {
         ]}
       />
       <BetterSelect
+        multiSelect={true}
         options={[
           { label: "one", value: "one", optgroup: "numbers" },
           { label: "two", value: "two", optgroup: "numbers" },
@@ -42,37 +39,6 @@ function App() {
     </div>
   );
 }
-
-export const Select2 = props => {
-  const { options, name, value, handleChange } = props;
-  // const [selectedValue, setSelectedValue] = useState(null);
-
-  return (
-    <select
-      name={name}
-      value={value}
-      onChange={val => handleChange(val.target.value)}
-    >
-      {options &&
-        options.map(option => {
-          return <option value={option.value}>{option.label}</option>;
-        })}
-    </select>
-  );
-};
-
-export const Menu = props => {
-  // const [dropdownOpen, toggleDropdownOpen] = useState(true);
-  return (
-    <ul
-      className={`value-list ${!props.dropdownOpen ? "none" : ""}`}
-      onClick={props.handleClick}
-    >
-      <li key="1"> Alabama</li>
-      <li key="2">Alaska</li>
-    </ul>
-  );
-};
 
 export class BetterSelect extends React.Component {
   constructor(props) {
@@ -96,7 +62,25 @@ export class BetterSelect extends React.Component {
         <ul
           className={`value-list ${!this.state.isOpen ? "none" : ""}`}
           onClick={e => {
-            this.inputEl.current.value = e.target.innerText;
+            if (!this.props.multiSelect)
+              this.inputEl.current.value = e.target.innerText;
+            else {
+              const selectedValue = e.target.innerText;
+              const selectionIntoArray = this.inputEl.current.value.split(", ");
+              const isAlreadySelected = selectionIntoArray.findIndex(
+                item => item === e.target.innerText
+              );
+              if (this.inputEl.current.value === "")
+                this.inputEl.current.value = e.target.innerText;
+              else if (isAlreadySelected < 0)
+                this.inputEl.current.value =
+                  this.inputEl.current.value + ", " + e.target.innerText;
+              else
+                this.inputEl.current.value = [
+                  ...selectionIntoArray.slice(0, isAlreadySelected),
+                  ...selectionIntoArray.slice(isAlreadySelected + 1)
+                ].join(", ");
+            }
             this.setState({ isOpen: false });
           }}
         >
@@ -123,8 +107,12 @@ export class BetterSelect extends React.Component {
           {this.state.options &&
             this.state.options.map(option => {
               const isSelected =
-                this.inputEl.current &&
-                option.value === this.inputEl.current.value
+                (this.inputEl.current &&
+                  option.value === this.inputEl.current.value) ||
+                (this.inputEl.current &&
+                  this.inputEl.current.value
+                    .split(", ")
+                    .find(item => item === option.value))
                   ? "selected"
                   : "";
               return (
@@ -136,6 +124,61 @@ export class BetterSelect extends React.Component {
         </ul>
       </form>
     );
+    // return (
+    //   <form>
+    //     <input
+    //       className="chosen-value"
+    //       type="text"
+    //       placeholder="Select..."
+    //       ref={this.inputEl}
+    //       onFocus={() => this.setState({ isOpen: true })}
+    //     />
+    //     <ul
+    //       className={`value-list ${!this.state.isOpen ? "none" : ""}`}
+    //       onClick={e => {
+    //         this.setState({ isOpen: false });
+    //       }}
+    //     >
+    //       <li onClick={e => e.stopPropagation()}>
+    //         <input
+    //           className="chosen-value"
+    //           type="text"
+    //           placeholder="Filter..."
+    //           onChange={e => {
+    //             console.log(e.target.value);
+    //             if (e.target.value === "")
+    //               this.setState({ options: this.props.options });
+    //             else
+    //               this.setState({
+    //                 options: this.props.options.filter(option =>
+    //                   option.value
+    //                     .toLowerCase()
+    //                     .includes(e.target.value.toLowerCase())
+    //                 )
+    //               });
+    //           }}
+    //         />
+    //       </li>
+    //       {this.state.options &&
+    //         this.state.options.map(option => {
+    //           const isSelected =
+    //             (this.inputEl.current &&
+    //               option.value === this.inputEl.current.value) ||
+    //             (this.inputEl.current &&
+    //               this.inputEl.current.value
+    //                 .split(", ")
+    //                 .find(item => item === option.value))
+    //               ? "selected"
+    //               : "";
+    //           return (
+    //             <li className={`${isSelected}`} key={option.value}>
+    //               {option.label}
+    //             </li>
+    //           );
+    //         })}
+    //     </ul>
+    //   </form>
+    // );
   }
 }
 
