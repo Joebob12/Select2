@@ -1,6 +1,6 @@
 {
   "name": "@joenied/select2",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "private": false,
   "repository": {
@@ -13,7 +13,10 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "babel": {
-    "presets": [ "@babel/react" ]
+    "presets": [
+      "@babel/react"
+    ],
+    "plugins": ["transform-class-properties"]
   },
   "dependencies": {
     "react": "16.8.6",
@@ -23,6 +26,7 @@
   "devDependencies": {
     "@babel/cli": "^7.5.5",
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "typescript": "3.3.3"
   },
   "scripts": {
