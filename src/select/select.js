@@ -10,6 +10,34 @@ export class Select2 extends React.Component {
         options: this.props.options
     };
   }
+  selectValue = (e) => {
+      const selectedValue = e.target.getAttribute("data-value");
+      const selectionIntoArray = this.inputEl.current.value.split(", ");
+      const isAlreadySelected = selectionIntoArray.findIndex(
+          item => item === selectedValue
+      );
+      if (
+          this.inputEl.current.value === "" ||
+          (!this.props.multiSelect &&
+              this.inputEl.current.value !== selectedValue)
+      )
+          this.inputEl.current.value = selectedValue;
+      else if (
+          !this.props.multiSelect &&
+          this.inputEl.current.value === selectedValue
+      )
+          this.inputEl.current.value = "";
+      else if (isAlreadySelected < 0)
+          this.inputEl.current.value =
+              this.inputEl.current.value + ", " + selectedValue;
+      else
+          this.inputEl.current.value = [
+              ...selectionIntoArray.slice(0, isAlreadySelected),
+              ...selectionIntoArray.slice(isAlreadySelected + 1)
+          ].join(", ");
+      this.props.selected(this.inputEl.current.value);
+      this.setState({ isOpen: false });
+  }
   render() {
     return (
       <div className="better-select">
@@ -19,36 +47,21 @@ export class Select2 extends React.Component {
           placeholder="Select..."
           ref={this.inputEl}
           onClick={() => this.setState({ isOpen: !this.state.isOpen })}
+          onKeyDown={(e) => {
+              if (e.key === 'Enter')
+                this.setState({isOpen: !this.state.isOpen})
+          }}
         />
         <ul
           className={`value-list ${!this.state.isOpen ? "none" : ""}`}
+          onKeyDown={e => {
+              if (e.key === 'Enter') {
+                  this.selectValue(e)
+              } else if (e.keyCode === 27)
+                  this.setState({ isOpen: false });
+          }}
           onClick={e => {
-            const selectedValue = e.target.getAttribute("data-value");
-            const selectionIntoArray = this.inputEl.current.value.split(", ");
-            const isAlreadySelected = selectionIntoArray.findIndex(
-              item => item === selectedValue
-            );
-            if (
-              this.inputEl.current.value === "" ||
-              (!this.props.multiSelect &&
-                this.inputEl.current.value !== selectedValue)
-            )
-              this.inputEl.current.value = selectedValue;
-            else if (
-              !this.props.multiSelect &&
-              this.inputEl.current.value === selectedValue
-            )
-              this.inputEl.current.value = "";
-            else if (isAlreadySelected < 0)
-              this.inputEl.current.value =
-                this.inputEl.current.value + ", " + selectedValue;
-            else
-              this.inputEl.current.value = [
-                ...selectionIntoArray.slice(0, isAlreadySelected),
-                ...selectionIntoArray.slice(isAlreadySelected + 1)
-              ].join(", ");
-            this.props.selected(this.inputEl.current.value);
-            this.setState({ isOpen: false });
+              this.selectValue(e)
           }}
         >
           <li onClick={e => e.stopPropagation()}>
@@ -86,6 +99,7 @@ export class Select2 extends React.Component {
                   className={`${isSelected}`}
                   key={option.value}
                   data-value={option.value}
+                  tabIndex={0}
                 >
                   {option.label}
                 </li>
