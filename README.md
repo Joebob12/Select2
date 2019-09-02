@@ -6,13 +6,14 @@ https://codesandbox.io/s/new-fdlc2
 
 ### Installation
 
-`import { Select2 } from "@joebob12/select2"`
+`npm install @joenied/select2 --save`
 
 ### How To Use
 
 First import this component where you want to use it
 
-`import { Select2 } from "@joebob12/select2"`
+`import { Select2 } from "@joenied/select2";
+ import "@joenied/select2/dist/select.css";`
 
 Then just render it
 
@@ -30,7 +31,8 @@ Then just render it
 
 ```
 import React, { Component } from "react";
-import { Select2 } from "@joebob12/select2";
+import { Select2 } from "@joenied/select2";
+import "@joenied/select2/dist/select.css";
 
 class App extends Component {
   render() {

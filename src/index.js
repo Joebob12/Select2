@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { Select2 } from "./select";
+import { Select2 } from "./select/select";
 
-import "./select.css";
+import "./select/select.css";
 import "./demo.css";
 
 function App() {

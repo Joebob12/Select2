@@ -5,14 +5,14 @@ export class Select2 extends React.Component {
   constructor(props) {
     super(props);
     this.inputEl = React.createRef();
+    this.state = {
+        isOpen: false,
+        options: this.props.options
+    };
   }
-  state = {
-    isOpen: false,
-    options: this.props.options
-  };
   render() {
     return (
-      <div class="better-select">
+      <div className="better-select">
         <input
           className="chosen-value"
           type="text"
