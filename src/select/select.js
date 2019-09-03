@@ -35,7 +35,8 @@ export class Select2 extends React.Component {
               ...selectionIntoArray.slice(0, isAlreadySelected),
               ...selectionIntoArray.slice(isAlreadySelected + 1)
           ].join(", ");
-      this.props.selected(this.inputEl.current.value);
+      if (this.props.selected)
+          this.props.selected(this.inputEl.current.value);
       this.setState({ isOpen: false });
   }
   render() {
