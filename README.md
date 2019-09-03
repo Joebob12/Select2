@@ -2,7 +2,7 @@
 
 ### Demo
 
-https://codesandbox.io/s/new-fdlc2
+https://codesandbox.io/s/new-ruyxe
 
 ### Installation
 
@@ -12,12 +12,20 @@ https://codesandbox.io/s/new-fdlc2
 
 First import this component where you want to use it
 
-`import { Select2 } from "@joenied/select2";
- import "@joenied/select2/dist/select.css";`
+`import { Select2 } from "@joenied/select2";`
+`import "@joenied/select2/dist/select.css";`
 
 Then just render it
 
-`<Select2 selected={e => doThingsWithValue(e)} options={[ { label: "one", value: "one" }, { label: "two", value: "two" }]} />`
+```
+    <Select2 
+        selected={e => doThingsWithValue(e)} 
+        options={[ 
+            { label: "one", value: "one" },
+            { label: "two", value: "two" }
+        ]}
+    />
+```
 
 ### Props
 
