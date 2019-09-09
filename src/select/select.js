@@ -10,6 +10,11 @@ export class Select2 extends React.Component {
         options: this.props.options
     };
   }
+  componentDidUpdate(prevProps, prevState, snapshot) {
+      if (prevProps.options !== this.props.options) {
+          this.setState({ options: this.props.options })
+      }
+  }
   selectValue = (e) => {
       const selectedValue = e.target.getAttribute("data-value");
       const selectionIntoArray = this.inputEl.current.value.split(", ");
